@@ -1,0 +1,185 @@
+/* Import Google Fonts - must be first */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Press+Start+2P&family=VT323&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+  }
+  
+  body {
+    @apply bg-black text-white;
+    font-family: 'IBM Plex Mono', monospace;
+    overflow-x: hidden;
+  }
+  
+  /* Prevent scroll hijacking in child containers */
+  .snap-start {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-black;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-700 rounded;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-600;
+  }
+}
+
+/* CRT Screen Effect */
+@layer components {
+  .crt-screen {
+    @apply relative;
+    background: #050505;
+  }
+  
+  .crt-screen::before {
+    content: '';
+    @apply absolute inset-0 pointer-events-none z-10;
+    background: linear-gradient(
+      rgba(18, 16, 16, 0) 50%,
+      rgba(0, 0, 0, 0.25) 50%
+    );
+    background-size: 100% 4px;
+  }
+  
+  .crt-screen::after {
+    content: '';
+    @apply absolute inset-0 pointer-events-none z-20;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(0,0,0,0) 0%,
+      rgba(0,0,0,0.4) 100%
+    );
+  }
+  
+  .scanlines {
+    @apply absolute inset-0 pointer-events-none z-10 opacity-30;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.3) 2px,
+      rgba(0,0,0,0.3) 4px
+    );
+  }
+  
+  .glow-text {
+    text-shadow: 0 0 10px currentColor;
+  }
+  
+  .phosphor-green {
+    color: #33FF00;
+    text-shadow: 0 0 10px rgba(51, 255, 0, 0.5);
+  }
+  
+  .phosphor-amber {
+    color: #FFB000;
+    text-shadow: 0 0 10px rgba(255, 176, 0, 0.5);
+  }
+}
+
+/* Windows 95 Style Components */
+@layer components {
+  .win95-button {
+    @apply relative px-4 py-1;
+    background: #C0C0C0;
+    border: 2px solid;
+    border-color: #FFFFFF #404040 #404040 #FFFFFF;
+    box-shadow: 1px 1px 0 #000000;
+    font-family: 'MS Sans Serif', Tahoma, sans-serif;
+    font-size: 11px;
+  }
+  
+  .win95-button:active {
+    border-color: #404040 #FFFFFF #FFFFFF #404040;
+    box-shadow: inset 1px 1px 0 #000000;
+  }
+  
+  .win95-window {
+    background: #C0C0C0;
+    border: 2px solid;
+    border-color: #FFFFFF #404040 #404040 #FFFFFF;
+    box-shadow: 2px 2px 0 #000000;
+  }
+  
+  .win95-title-bar {
+    @apply px-2 py-1 flex items-center justify-between;
+    background: linear-gradient(90deg, #000080 0%, #1084d0 100%);
+    color: white;
+    font-family: 'MS Sans Serif', Tahoma, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+  }
+}
+
+/* Blinking cursor */
+@layer components {
+  .cursor-blink::after {
+    content: '█';
+    @apply animate-blink ml-1;
+  }
+}
+
+/* Era transition utilities */
+@layer utilities {
+  .era-transition {
+    @apply transition-all duration-1000 ease-in-out;
+  }
+  
+  .glitch-effect {
+    animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+  }
+}
+
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+/* Marquee animation for Web 1.0 era */
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 15s linear infinite;
+}
