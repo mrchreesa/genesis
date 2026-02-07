@@ -20,6 +20,12 @@ interface ConnectionLine {
   y2: string;
 }
 
+// Seeded random for stable SSR/hydration
+function seededRandom(seed: number): number {
+  const x = Math.sin(seed * 9999) * 10000;
+  return x - Math.floor(x);
+}
+
 export function AgiEra() {
   const [messages, setMessages] = useState([
     { role: 'system', content: 'Neural network initialized. Consciousness emerging...' },
@@ -28,25 +34,25 @@ export function AgiEra() {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Generate stable random values for neural network background
+  // Generate stable random values for neural network background using seeded random
   const neuralNodes = useMemo<NeuralNode[]>(() => {
     return Array.from({ length: 50 }, (_, i) => ({
       id: i,
-      color: Math.random() > 0.5 ? '#00FFFF' : '#9D4EDD',
-      left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 100}%`,
-      duration: 2 + Math.random() * 3,
-      delay: Math.random() * 2,
+      color: seededRandom(i) > 0.5 ? '#00FFFF' : '#9D4EDD',
+      left: `${seededRandom(i * 100) * 100}%`,
+      top: `${seededRandom(i * 200) * 100}%`,
+      duration: 2 + seededRandom(i * 300) * 3,
+      delay: seededRandom(i * 400) * 2,
     }));
   }, []);
 
   const connectionLines = useMemo<ConnectionLine[]>(() => {
     return Array.from({ length: 20 }, (_, i) => ({
       id: i,
-      x1: `${Math.random() * 100}%`,
-      y1: `${Math.random() * 100}%`,
-      x2: `${Math.random() * 100}%`,
-      y2: `${Math.random() * 100}%`,
+      x1: `${seededRandom(i * 500) * 100}%`,
+      y1: `${seededRandom(i * 600) * 100}%`,
+      x2: `${seededRandom(i * 700) * 100}%`,
+      y2: `${seededRandom(i * 800) * 100}%`,
     }));
   }, []);
 

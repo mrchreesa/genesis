@@ -4,6 +4,12 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// Seeded random for stable SSR/hydration
+function seededRandom(seed: number): number {
+  const x = Math.sin(seed * 9999) * 10000;
+  return x - Math.floor(x);
+}
+
 interface PunchCard {
   id: number;
   row: number;
@@ -27,25 +33,25 @@ export function GenesisEra() {
   const [punchCards, setPunchCards] = useState<PunchCard[]>([]);
   const [activeTab, setActiveTab] = useState<'turing' | 'eniac' | 'punch'>('turing');
 
-  // Generate binary rain background - stable random values
+  // Generate binary rain background - stable random values using seeded random
   const binaryRain = useMemo(() => {
-    return Array.from({ length: 30 }, () =>
-      Array.from({ length: 60 }, () => Math.random() > 0.5 ? '1' : '0').join('')
+    return Array.from({ length: 30 }, (_, i) =>
+      Array.from({ length: 60 }, (_, j) => seededRandom(i * 60 + j) > 0.5 ? '1' : '0').join('')
     );
   }, []);
 
   // Pre-generate animation configs for binary rain
   const rainAnimationConfigs = useMemo(() => {
-    return Array.from({ length: 30 }, () => ({
-      duration: 8 + Math.random() * 8,
-      delay: Math.random() * 5,
+    return Array.from({ length: 30 }, (_, i) => ({
+      duration: 8 + seededRandom(i * 100) * 8,
+      delay: seededRandom(i * 200) * 5,
     }));
   }, []);
 
   // Vacuum tube flicker effect
   useEffect(() => {
     const interval = setInterval(() => {
-      setTubes(prev => prev.map(() => Math.random() > 0.85));
+      setTubes(prev => prev.map((_, i) => seededRandom(Date.now() + i) > 0.85));
     }, 100);
     return () => clearInterval(interval);
   }, []);
